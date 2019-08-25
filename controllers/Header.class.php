@@ -1,11 +1,66 @@
 <?php 
 /* Controller for Headers
   @author Riste Dimitrievski
-  @version 1.0.0
+  @version 1.0.1
  */
 namespace Portal\Headers;
+class SessionException{
+public function __construct($data)
+{
+$this->data = $data;
+return $this->data;
+}
+
+}
+class Session
+{
+
+public function __construct($option, $param = null)
+{
+$this->option = $option;
+$this->param = $param;
+
+}
+public function start(){
 session_start();
 ob_start();
+}
+public function destroy(){
+session_destroy();
+ob_flush();
+}
+public function execute(){
+switch($this->option){
+case "new":
+if(!is_array($this->param)){
+return new Headers\SessionException("The parameters for this option should be in array name => value");
+}
+if(is_null($this->param)){
+return new Headers\SessionException("The parameters should not be NULL");
+}
+foreach($this->param as $this->key => $this->value){
+$this->name = $this->param['name'];
+$this->value = $this->param['value'];
+}
+$_SESSION["{$this->name}"] = "{$this->value}";
+return TRUE;
+break;
+case "read":
+if(is_array($this->param)){
+return new Headers\SessionException("The parameter should not be an array");
+}
+return $_SESSION["{$this->param}"];
+break;
+case "remove":
+if(is_array($this->param)){
+return new Headers\SessionException("The parameter should not be an array");
+}
+unset($_SESSION["{$this->param}"]);
+return TRUE;
+break;
+}
+}
+}
 class Request
 {
 var $get = array();
