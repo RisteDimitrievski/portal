@@ -4,6 +4,21 @@
   @version 1.0.1
  */
 namespace Portal\Headers;
+
+class Server
+{
+public function __construct($data){
+$this->data = $data;
+}
+public function get(){
+return $_SERVER["{$this->data}"];
+}
+public function redirectWWW(){
+header("Location: {$this->data}");
+}
+}
+
+
 class SessionException{
 public function __construct($data)
 {
@@ -100,6 +115,7 @@ return $_COOKIE["{$this->data}"];
 break;
 }
 }
+
 }
 
 class Cookie
